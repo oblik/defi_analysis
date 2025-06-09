@@ -158,7 +158,7 @@ def main():
     pool_stats = calculate_pool_statistics(all_data)
     
     # Save pool statistics
-    pool_stats.to_csv('data/pool_statistics.csv', index=False)
+    pool_stats.to_csv('statistics/pool_statistics.csv', index=False)
     print("\nPool Statistics:")
     print(pool_stats.round(2))
     
@@ -184,7 +184,7 @@ def main():
     
     # Save results to CSV
     for apy_type, df in best_protocols.items():
-        output_file = f'data/best_{apy_type}.csv'
+        output_file = f'statistics/best_{apy_type}.csv'
         df.to_csv(output_file, index=False)
         print(f"\nSaved {apy_type} results to {output_file}")
 

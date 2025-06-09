@@ -12,7 +12,7 @@ import numpy as np
 
 # Configuration
 DATA_DIR = "data"
-OUTPUT_DIR = "results"
+OUTPUT_DIR = "graphs"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Set plot style

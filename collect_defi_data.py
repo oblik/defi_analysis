@@ -19,7 +19,7 @@ END_DATE = "2025-06-05"    # June 1, 2025
 
 
 # Create output directory
-OUTPUT_DIR = "data"
+OUTPUT_DIR = "data/defillama"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Function to pretty print JSON
