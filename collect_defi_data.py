@@ -11,12 +11,15 @@ import time
 import os
 
 # Configuration
-TARGET_PROTOCOLS = ["aave", "fluid", "morpho", 'euler', 'kamino', 'ethena', 'sky.money', 'ondo', 'elixir', 'openeden']
-TARGET_ASSETS = ["usdc", "usdt", "usds", "susds", "compound usdt", 'usde', 'usdt0', 'dai']
-TARGET_CHAINS = ["ethereum", "base", "arbitrum", "avalanche", "bnb", "polygon"]
-START_DATE = "2024-06-06"  # January 1, 2024
-END_DATE = "2025-06-05"    # June 1, 2025
+TARGET_PROTOCOLS = ["aave-v3", "fluid", "morpho", 'euler', 'kamino', 'ethena', 'sky.money', 'ondo', 'elixir', 'openeden'] # для сравнения
 
+TARGET_COINS = ['ethena', 'sky.money', 'ondo', 'elixir', 'openeden']
+# Ethena - убрать из общего расчета стратегии, т.к. он не стабильный.
+# Посчитать APY на протокол, а не на pool.
+TARGET_ASSETS = ["usdc", "usdt", "compound usdt", 'usdt0']
+TARGET_CHAINS = ["ethereum", "base", "arbitrum", "avalanche", "bnb", "polygon"]
+START_DATE = "2024-06-06"  
+END_DATE = "2025-06-06"    
 
 # Create output directory
 OUTPUT_DIR = "data/defillama"
@@ -35,24 +38,33 @@ def get_all_yield_pools():
         raise Exception(f"Failed to fetch yield pools: {response.status_code}")
     
     yield_data = response.json()
+    # Save complete response to JSON file
+    with open('full_pools.json', 'w') as f:
+        json.dump(yield_data, f, indent=2)
+    print("Saved complete pool data to full_pools.json")
+    
     print(f"Total yield pools: {len(yield_data['data'])}")
     return yield_data['data']
 
-def filter_target_pools(pools):
-    """Filter pools based on target protocols, assets, and chains"""
+def filter_target_pools(pools, tvl_threshold=1_000_000):
+    """Filter pools based on target protocols, assets, chains, and stablecoin status"""
     filtered_pools = []
     
     for pool in pools:
         project = pool.get('project', '').lower()
         symbol = pool.get('symbol', '').lower()
         chain = pool.get('chain', '').lower()
+        tvl = pool.get('tvlUsd', 0)
+        is_stablecoin = pool.get('stablecoin', False)
         
-        if any(target in project for target in TARGET_PROTOCOLS):
-            if any(asset in symbol for target_asset in TARGET_ASSETS for asset in [target_asset.lower()]):
-                if any(target_chain in chain.lower() for target_chain in TARGET_CHAINS):
-                    filtered_pools.append(pool)
+        if is_stablecoin:
+            if any(target in project for target in TARGET_PROTOCOLS):
+                if any(asset in symbol for target_asset in TARGET_ASSETS for asset in [target_asset.lower()]):
+                    if any(target_chain in chain.lower() for target_chain in TARGET_CHAINS):
+                        if tvl > tvl_threshold:  # Filter pools with TVL > threshold
+                            filtered_pools.append(pool)
     
-    print(f"Found {len(filtered_pools)} matching yield pools")
+    print(f"Found {len(filtered_pools)} matching yield pools with TVL > ${tvl_threshold:,} and stablecoin=True")
     return filtered_pools
 
 def get_historical_data(pool_id):
@@ -116,17 +128,22 @@ def main():
     all_pools = get_all_yield_pools()
     print(f"Found {len(all_pools)} yield pools")
     
+    # Set TVL threshold here for easy adjustment
+    TVL_THRESHOLD = 1_000_000
     # Filter target pools
-    target_pools = filter_target_pools(all_pools)
+    target_pools = filter_target_pools(all_pools, tvl_threshold=1000000)
     
     # Save pool IDs to pools.txt
-    with open('pools.txt', 'w') as f:
-        f.write('name,pool_id\n')
+    with open('pools_'+str(TVL_THRESHOLD)+'.txt', 'w') as f:
+        f.write('name,pool_id,market,coin,chain,is_stablecoin,address\n')
         for pool in target_pools:
             pool_name = f"{pool['project']}_{pool['symbol']}_{pool['chain']}".replace(' ', '_')
             # Get the pool ID from the chart endpoint
             historical_url = f"https://yields.llama.fi/chart/{pool['pool']}"
-            f.write(f"{pool_name},{historical_url}\n")
+            is_stablecoin = pool.get('stablecoin', False)
+            # Get the first token address from underlyingTokens
+            address = pool.get('underlyingTokens', [''])[0] if pool.get('underlyingTokens') else ''
+            f.write(f"{pool_name},{historical_url},{pool['project']},{pool['symbol']},{pool['chain']},{is_stablecoin},{address}\n")
     
     # Display target pools
     print("\nTarget pools:")
@@ -170,23 +187,37 @@ def main():
     
     all_dates = sorted(list(all_dates))
     
-    # Create a DataFrame with dates as index and pools as columns
-    summary_df = pd.DataFrame(index=all_dates)
+    # Create DataFrames for APY and TVL
+    apy_summary = pd.DataFrame(index=all_dates)
+    tvl_summary = pd.DataFrame(index=all_dates)
     
-    # Add APY data for each pool
+    # Add APY and TVL data for each pool
     for pool_name, df in all_historical_data.items():
         if not df.empty:
-            # Set date as index and get APY column
-            pool_data = df.set_index('date')['apy']
-            summary_df[pool_name] = pool_data
+            # Get pool info from the original data
+            pool_info = next((p for p in target_pools if f"{p['project']}_{p['symbol']}_{p['chain']}".replace(' ', '_') == pool_name), None)
+            
+            # Only include stablecoins
+            if pool_info and pool_info.get('stablecoin', False):
+                # Set date as index and get APY and TVL columns
+                pool_apy = df.set_index('date')['apy']
+                pool_tvl = df.set_index('date')['tvl']
+                apy_summary[pool_name] = pool_apy
+                tvl_summary[pool_name] = pool_tvl
     
     # Fill NaN values with 0
-    summary_df = summary_df.fillna(0)
+    apy_summary = apy_summary.fillna(0)
+    tvl_summary = tvl_summary.fillna(0)
     
-    # Save to CSV
-    summary_file = os.path.join(OUTPUT_DIR, "summary.csv")
-    summary_df.to_csv(summary_file)
-    print(f"\nSummary saved to {summary_file}")
+    # Save APY summary
+    apy_summary_file = os.path.join(OUTPUT_DIR, "summary_apy.csv")
+    apy_summary.to_csv(apy_summary_file)
+    print(f"\nAPY Summary saved to {apy_summary_file}")
+    
+    # Save TVL summary
+    tvl_summary_file = os.path.join(OUTPUT_DIR, "summary_tvl.csv")
+    tvl_summary.to_csv(tvl_summary_file)
+    print(f"TVL Summary saved to {tvl_summary_file}")
     
     print("\nData collection complete!")
 

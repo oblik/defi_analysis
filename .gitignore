@@ -1,3 +1,4 @@
 .env
 .venv
 Archive
+data/defillama/archive

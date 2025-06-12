@@ -567,5 +567,17 @@ def main() -> None:
         import traceback
         logger.error(traceback.format_exc())
 
+from dune_client.client import DuneClient
+import os
+import pandas as pd
+
+dune = DuneClient(os.environ.get("DUNE_API_KEY"))
+query_result = dune.get_latest_result(5266260)
+
+df = pd.DataFrame(query_result.get_rows())
+
+os.makedirs("data/dune", exist_ok=True)
+df.to_csv("data/dune/dune_query_5266260.csv", index=False)
+
 if __name__ == "__main__":
     main()
