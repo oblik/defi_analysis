@@ -33,7 +33,7 @@ def calculate_pool_statistics(all_data):
     
     return pd.DataFrame(stats)
 
-def load_all_data(threshold=None):
+def load_all_data():
     """Load all CSV files from the data directory, filtered by pools_{THRESHOLD}.txt if threshold is set"""
     data_dir = Path('data/defillama')
     all_data = {}
@@ -41,25 +41,11 @@ def load_all_data(threshold=None):
     if not data_dir.exists():
         raise FileNotFoundError(f"Data directory not found: {data_dir}")
 
-    # Determine pools file
-    pools_file = f"pools_{threshold}.txt" if threshold is not None else "pools.txt"
-    if not Path(pools_file).exists():
-        raise FileNotFoundError(f"Pools file not found: {pools_file}")
-
-    # Read allowed pool names from pools file
-    import csv
-    allowed_pools = set()
-    stablecoin_pools = set()
-    with open(pools_file, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if 'is_stablecoin' in row and row['is_stablecoin'].strip().lower() == 'true':
-                allowed_pools.add(row['name'])
-    # Only pools with is_stablecoin == True are allowed
-
-    # Get all CSV files except summary/statistics
+    # Get all CSV files except summary/statistics and excluded protocols
+    exclude_names = ['ethena', 'sky.money', 'ondo', 'elixir', 'openeden', "susds", 'dai']
     csv_files = glob.glob(str(data_dir / '*.csv'))
     csv_files = [f for f in csv_files if not any(x in f for x in ['summary', 'statistics'])]
+    csv_files = [f for f in csv_files if not any(ex in Path(f).stem.lower() for ex in exclude_names)]
 
     if not csv_files:
         raise FileNotFoundError(f"No CSV files found in {data_dir}")
@@ -68,8 +54,6 @@ def load_all_data(threshold=None):
 
     for file_path in csv_files:
         filename = Path(file_path).stem
-        if filename not in allowed_pools:
-            continue  # skip pools not in threshold file
         try:
             parts = filename.split('_')
             if len(parts) >= 3:
@@ -104,7 +88,7 @@ def load_all_data(threshold=None):
     if not all_data:
         raise ValueError("No valid data was loaded from any files")
 
-    print(f"\nSuccessfully loaded data for {len(all_data)} protocols (filtered by {pools_file})")
+    print(f"\nSuccessfully loaded data for {len(all_data)} protocols.")
     return all_data
 
 def find_best_protocols(all_data):
@@ -174,10 +158,8 @@ def analyze_strategy(best_protocols):
     
     return results
 
-def main(threshold = 1000000):
-    # Set threshold here (e.g., 1000000, 10000000, 50000000)
-    print(f"Loading data with threshold {threshold}...")
-    all_data = load_all_data(threshold=threshold)
+def main():
+    all_data = load_all_data()
     print(f"Loaded data for {len(all_data)} protocols")
     
     # Calculate pool statistics
@@ -215,11 +197,9 @@ def main(threshold = 1000000):
     
     # Save results to CSV
     for apy_type, df in best_protocols.items():
-        output_file = f'statistics/best_{apy_type}_{threshold}.csv'
+        output_file = f'statistics/best_{apy_type}.csv'
         df.to_csv(output_file, index=False)
         print(f"\nSaved {apy_type} results to {output_file}")
 
 if __name__ == "__main__":
-    main(threshold = 1000000) 
-    main(threshold = 10000000) 
-    main(threshold = 50000000) 
+    main()

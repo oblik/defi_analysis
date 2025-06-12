@@ -1,179 +1,106 @@
 # Liquidity Optimization Across Yield-Generating Protocols
 
-This project analyzes historical APY and TVL data for various DeFi protocols and assets to optimize liquidity allocation across yield-generating protocols.
+This project is a research and automation toolkit for maximizing DeFi yield by dynamically reallocating liquidity across protocols and chains, based on historical APY and TVL data.
 
-## Project Overview
+## What It Does
 
-The goal of this project is to test the hypothesis that balancing liquidity between existing yield-generating protocols allows users to:
+- **Collects** historical APY/TVL data for stablecoin pools from DefiLlama and Dune Analytics.
+- **Analyzes** the data to find optimal strategies for yield allocation.
+- **Visualizes** protocol, asset, and strategy performance.
+- **Outputs** CSVs and charts for further research or integration.
 
-1. Obtain the highest yield at any given time
-2. Reduce interest rate volatility
-3. Reduce maintenance overhead for users by pooling capital
+## Supported Protocols & Assets
 
-## Data Collection
-
-The project collects data from two main sources:
-
-1. **DefiLlama API** - Using `collect_defi_data.py`
-2. **Dune Analytics** - Using `collect_dune_data.py`
-
-### Supported Protocols
-
-- AAVE (markets: Ethereum, Base, Arbitrum, Avalanche, BNB Chain, Polygon)
-- Fluid (markets: Ethereum, Base, Arbitrum, Polygon)
-- Morpho (markets: Ethereum, Base, Polygon)
-- Euler
-- Kamino
-- Ethena
-- Sky.money
-- Ondo
-- Elixir
-- Openeden
-
-### Supported Assets
-
-- USDC
-- USDT
-- USDS
-- sUSDS
-- Compound USDT
-- USDE
-- USDT0
-- DAI
-
-## Setup and Installation
-
-### Prerequisites
-
-- Python 3.8+
-- pip (Python package manager)
-
-### Installation
-
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   cd Liquidity-Optimization-Across-Yield-Generating-Protocols
-   ```
-
-2. Install required packages:
-   ```
-   pip install pandas requests dune-client
-   ```
-
-3. Set up API keys:
-   - For Dune Analytics data collection, set your API key as an environment variable:
-     ```
-     # On Windows
-     set DUNE_API_KEY=your_api_key_here
-     
-     # On macOS/Linux
-     export DUNE_API_KEY=your_api_key_here
-     ```
-
-## Usage
-
-### Collecting Data from DefiLlama
-
-Run the following command to collect data from DefiLlama:
-
-```
-python collect_defi_data.py
-```
-
-This will:
-- Fetch yield pools from DefiLlama API
-- Filter pools based on target protocols, assets, and chains
-- Collect historical APY and TVL data for each pool
-- Save data to CSV files in the `data` directory
-
-### Collecting Data from Dune Analytics
-
-Run the following command to collect data from Dune Analytics:
-
-```
-python collect_dune_data.py
-```
-
-This will:
-- Connect to Dune Analytics API using your API key
-- Execute SQL queries for each protocol-asset-chain combination
-- Process and save the data to CSV files in the `data/dune` directory
-- Create summary and statistics files
-
-### Analyzing the Data
-
-After collecting data, you can analyze it using:
-
-```
-python strategy.py
-```
-
-This will:
-- Calculate statistics for each pool
-- Find the best protocol for each date and APY type
-- Analyze the results and print statistics
-- Save results to CSV files in the `statistics` directory
-
-## Dune Analytics Setup
-
-To use the Dune Analytics data collection script:
-
-1. Create an account on [Dune Analytics](https://dune.com/)
-2. Subscribe to a paid plan to get API access
-3. Generate an API key from your account settings
-4. Set the API key as an environment variable as described above
-
-### Creating Custom Queries
-
-The `collect_dune_data.py` script includes SQL templates for various protocols. To create your own queries:
-
-1. Log in to Dune Analytics
-2. Create a new query using the SQL editor
-3. Use the provided SQL templates as a starting point
-4. Save your query and note the query ID
-5. Update the `DUNE_QUERIES` dictionary in the script with your query ID
-
-## Data Structure
-
-The collected data is organized in two formats:
-
-1. **Individual pool files**
-   - Each pool has its own CSV file with daily data
-   - Contains: date, TVL, APY, base APY, and reward APY
-   - Path: `data/{protocol}_{asset}_{chain}.csv`
-
-2. **Summary file**
-   - Matrix format with dates as rows and pools as columns
-   - Values represent APY for each pool on each date
-   - Missing values filled with zeros
-   - Path: `data/summary.csv`
+- **Protocols:** AAVE (v2/v3), Fluid, Morpho (Aave/Compound/Blue), Euler, Kamino, Ethena, Sky.money, Ondo, Elixir, Openeden
+- **Chains:** Ethereum, Base, Arbitrum, Avalanche, BNB Chain, Polygon
+- **Assets:** USDC, USDT, USDS, sUSDS, Compound USDT, USDE, USDT0, DAI, and more
 
 ## Project Structure
 
 ```
-├── collect_defi_data.py     # Script to collect data from DefiLlama
-├── collect_dune_data.py     # Script to collect data from Dune Analytics
-├── strategy.py              # Script to analyze data and find optimal strategies
-├── report.md                # Analysis report
-├── pools.txt                # List of tracked pools
-├── data/                    # Directory containing collected data
-│   ├── aave-v2_*.csv        # Data for Aave v2 pools
-│   ├── aave-v3_*.csv        # Data for Aave v3 pools
-│   ├── morpho-blue_*.csv    # Data for Morpho Blue pools
-│   └── ...                  # Other protocol data
-├── best_strategy/           # Directory containing best strategy results
-│   ├── best_apy_base.csv    # Best base APY strategy
-│   ├── best_apy_reward.csv  # Best reward APY strategy
-│   └── best_apy_total.csv   # Best total APY strategy
-└── results/                 # Directory containing visualization results
-    └── ...                  # Various charts and visualizations
+├── collect_defi_data.py     # DefiLlama data collector
+├── collect_dune_data.py     # Dune Analytics data collector
+├── collect_etherscan.py     # (Optional) Etherscan data collector
+├── strategy.py              # Main analysis/strategy script
+├── analyze_data.py          # Visualization and extra analytics
+├── weighted_apy.py          # TVL-weighted APY calculation
+├── pools_1000000.txt        # List of tracked pools
+├── data/
+│   ├── defillama/           # Per-pool CSVs from DefiLlama
+│   ├── dune/                # Per-pool CSVs from Dune
+│   └── etherscan/           # (Optional) Etherscan data
+├── statistics/              # Analysis outputs (best strategies, pool stats, summaries)
+├── best_strategy/           # Best protocol/asset/chain per day (various APY types)
+├── graphs/                  # Visualizations (APY/TVL per protocol/asset, etc)
+├── report.md                # Research report (RU)
+├── fees.md                  # Fee/transaction cost info
+├── requirements.txt         # Python dependencies
+└── README.md                # This file
 ```
 
-## Contributing
+## Setup
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+- Python 3.11+
+- `pip install -r requirements.txt`
+- For Dune: set `DUNE_API_KEY` env var
+- For ETHERSCAN: set `ETHERSCAN_API_KEY` env var
 
-## License
+## Usage
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+**1. Collect DefiLlama data:**
+```
+python collect_defi_data.py
+```
+- Fetches, filters, and saves per-pool CSVs in `data/defillama/`
+
+**2. Collect Dune Analytics data:**
+```
+python collect_dune_data.py
+```
+- Requires Dune API key
+- Saves per-pool CSVs in `data/dune/`
+
+**3. Analyze and strategize:**
+```
+python strategy.py
+```
+- Loads all data, computes pool stats, finds best protocol/asset/chain per day, outputs to `statistics/` and `best_strategy/`
+
+**4. Visualize:**
+```
+python analyze_data.py
+```
+- Generates APY/TVL charts per protocol/asset, aggregated model, volatility, etc. in `graphs/`
+
+**5. Weighted APY:**
+```
+python weighted_apy.py
+```
+- Computes TVL-weighted average APY across all pools
+
+## Data Structure
+
+- **Per-pool CSVs:** `data/defillama/{protocol}_{asset}_{chain}.csv`
+  - Columns: date, tvl, apy, apy_base, apy_reward
+- **Summary/statistics:** `statistics/`
+  - `pool_statistics.csv`, `best_apy_*.csv`, `summary_apy.csv`, `summary_tvl.csv`, etc.
+- **Best strategies:** `best_strategy/best_apy_*.csv`
+- **Visualizations:** `graphs/`
+
+## Key Insights (from report.md)
+
+- Dynamic allocation to the highest-yielding pool maximizes average APY, but increases volatility.
+- Some protocols (e.g., Fluid, Morpho) offer higher but more volatile yields.
+- AAVE is more stable but lower-yielding.
+- Transaction fees and switching costs can erode gains from frequent rebalancing.
+- Diversification and volatility-aware strategies are recommended.
+
+## Fees
+
+See `fees.md` for typical transaction costs by chain.
+
+## Extending
+
+- Add new protocols/assets by editing the config in the data collection scripts.
+- Add new Dune queries by updating the `DUNE_QUERIES` dict in `collect_dune_data.py`.
+

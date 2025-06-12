@@ -34,9 +34,9 @@ morpho-blue_HYPERUSDC_Ethereum,https://yields.llama.fi/chart/04597889-bb52-4ae9-
 aave-v3_USDC_Polygon,https://yields.llama.fi/chart/1b8b4cdb-0728-42a8-bf13-2c8fea7427ee,aave-v3,USDC,Polygon,True,0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359
 morpho-blue_GTUSDT_Ethereum,https://yields.llama.fi/chart/4cecbdfa-7189-4801-88ef-cdfee4b23298,morpho-blue,GTUSDT,Ethereum,True,0xdAC17F958D2ee523a2206206994597C13D831ec7
 morpho-blue_GTEUSDC_Ethereum,https://yields.llama.fi/chart/456f5bec-a81b-4862-926b-e9e00c97e7c7,morpho-blue,GTEUSDC,Ethereum,True,0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F
+euler-v2_USDC_Ethereum,https://yields.llama.fi/chart/fa68041a-2ce5-4ee5-88a0-ec5185f0bdb7,euler-v2,USDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
 morpho-blue_FUSDC_Ethereum,https://yields.llama.fi/chart/b94eb474-2c96-404b-a822-0ed3fadd0148,morpho-blue,FUSDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
 morpho-blue_SBMORPHOUSDC_Ethereum,https://yields.llama.fi/chart/c938c26a-2339-46a7-88fb-9ce48d4adf6a,morpho-blue,SBMORPHOUSDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
-euler-v2_USDC_Ethereum,https://yields.llama.fi/chart/fa68041a-2ce5-4ee5-88a0-ec5185f0bdb7,euler-v2,USDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
 morpho-blue_VBGTUSDT_Ethereum,https://yields.llama.fi/chart/a26a7f9d-e55a-466a-b9fe-4041ce950cf0,morpho-blue,VBGTUSDT,Ethereum,True,0xdAC17F958D2ee523a2206206994597C13D831ec7
 morpho-blue_9SUSDC11CORE_Ethereum,https://yields.llama.fi/chart/7ba739d5-02dc-4f81-bd54-9855fdbf4e96,morpho-blue,9SUSDC11CORE,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
 morpho-blue_APRUSDC_Ethereum,https://yields.llama.fi/chart/a1b0e78d-56c7-4259-9deb-93e18aafadbb,morpho-blue,APRUSDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
@@ -45,8 +45,8 @@ morpho-blue_GTUSDCC_Base,https://yields.llama.fi/chart/34d90c49-da88-49b2-937e-0
 morpho-blue_BBQUSDT_Ethereum,https://yields.llama.fi/chart/5f25e831-d41f-4e34-97ac-5325f44ba4e2,morpho-blue,BBQUSDT,Ethereum,True,0xdAC17F958D2ee523a2206206994597C13D831ec7
 euler-v2_USDC_Avalanche,https://yields.llama.fi/chart/737e7847-d654-4f53-ab42-6c84c814291d,euler-v2,USDC,Avalanche,True,0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E
 morpho-blue_STEAKUSDC_Base,https://yields.llama.fi/chart/3ad60cb7-74db-448b-9e3b-e6af576e697f,morpho-blue,STEAKUSDC,Base,True,0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
-morpho-blue_GTUSDCP_Base,https://yields.llama.fi/chart/b6b2dd6c-de60-4d6f-9a30-85ec24c514d3,morpho-blue,GTUSDCP,Base,True,0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
 morpho-blue_COUSDC_Base,https://yields.llama.fi/chart/d184356d-69c9-4f6e-8b7b-5a0a3aa6ed27,morpho-blue,COUSDC,Base,True,0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+morpho-blue_GTUSDCP_Base,https://yields.llama.fi/chart/b6b2dd6c-de60-4d6f-9a30-85ec24c514d3,morpho-blue,GTUSDCP,Base,True,0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
 morpho-blue_FXUSDC_Ethereum,https://yields.llama.fi/chart/5dbdc9fe-8df3-40e8-8c4e-ec517948453f,morpho-blue,FXUSDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
 euler-v2_USDC_Ethereum,https://yields.llama.fi/chart/a0f53224-c152-416e-8599-4563e70c6040,euler-v2,USDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
 morpho-blue_HYUSDC_Ethereum,https://yields.llama.fi/chart/9674ffb3-faaf-4d93-99e7-1175ca0ad643,morpho-blue,HYUSDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
@@ -54,6 +54,7 @@ euler-v2_USDT_Ethereum,https://yields.llama.fi/chart/bc244917-e28c-4f10-bfa4-79b
 morpho-blue_GTMSUSDC_Ethereum,https://yields.llama.fi/chart/c21748f7-d4a5-4f6f-b035-d059d8182aee,morpho-blue,GTMSUSDC,Ethereum,True,0xab5eB14c09D416F0aC63661E57EDB7AEcDb9BEfA
 euler-v2_USDC_Ethereum,https://yields.llama.fi/chart/147a01ef-7f0d-4781-b756-84b33b45f721,euler-v2,USDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
 morpho-blue_RE7USDC_Base,https://yields.llama.fi/chart/7311a4f0-396d-4db1-82b5-6ab33337716b,morpho-blue,RE7USDC,Base,True,0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+fluid-lending_SUSDS_Ethereum,https://yields.llama.fi/chart/cf5e01f8-9e54-4bfe-a411-3ee17683f954,fluid-lending,SUSDS,Ethereum,True,0xa3931d71877c0e7a3148cb7eb4463524fec27fbd
 euler-v2_USDC_Base,https://yields.llama.fi/chart/2d02765d-1444-46a0-8046-cd7af0c06ac1,euler-v2,USDC,Base,True,0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
 morpho-blue_HYPERUSDT_Ethereum,https://yields.llama.fi/chart/88dc8fef-a378-4338-9961-d8f9e178eb04,morpho-blue,HYPERUSDT,Ethereum,True,0xdAC17F958D2ee523a2206206994597C13D831ec7
 morpho-blue_CUSDOUSDC_Ethereum,https://yields.llama.fi/chart/1964d01a-aa64-4ec0-a068-1ee3e85fcb40,morpho-blue,CUSDOUSDC,Ethereum,True,0x90455bd11Ce8a67C57d467e634Dc142b8e4105Aa
@@ -62,5 +63,8 @@ aave-v3_USDC_Polygon,https://yields.llama.fi/chart/37b04faa-95bb-4ccb-9c4e-c70fa
 morpho-blue_USDC_Ethereum,https://yields.llama.fi/chart/363b9e0e-28c4-4153-9fff-f2f9ac2d3a3c,morpho-blue,USDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
 morpho-blue_EXMUSDC_Base,https://yields.llama.fi/chart/585d1cb4-4dfe-45bf-b1b9-f761862906c7,morpho-blue,EXMUSDC,Base,True,0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
 morpho-blue_MIDASUSDC_Ethereum,https://yields.llama.fi/chart/4f31295b-cda0-4a3d-9c4b-36d69fdd96fb,morpho-blue,MIDASUSDC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+fluid-lending_SUSDS_Ethereum,https://yields.llama.fi/chart/f918753b-4cf3-4eec-97aa-ab6b5409b5f9,fluid-lending,SUSDS,Ethereum,True,0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD
+morpho-blue_SUSDS_Ethereum,https://yields.llama.fi/chart/9469cde6-65d8-4bbb-ade6-8a89f1728403,morpho-blue,SUSDS,Ethereum,True,0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD
 morpho-blue_HUSDT_Ethereum,https://yields.llama.fi/chart/8528b23a-6076-4158-b748-496306c11263,morpho-blue,HUSDT,Ethereum,True,0xdAC17F958D2ee523a2206206994597C13D831ec7
 morpho-blue_RE7USDCC_Ethereum,https://yields.llama.fi/chart/5b0c7b0b-065f-4717-b8f2-1b1774210249,morpho-blue,RE7USDCC,Ethereum,True,0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+fluid-lending_SUSDS_Arbitrum,https://yields.llama.fi/chart/6269abc0-60e6-4e83-9558-fa957781a763,fluid-lending,SUSDS,Arbitrum,True,0xdDb46999F8891663a8F2828d25298f70416d7610

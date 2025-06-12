@@ -16,7 +16,7 @@ TARGET_PROTOCOLS = ["aave-v3", "fluid", "morpho", 'euler', 'kamino', 'ethena', '
 TARGET_COINS = ['ethena', 'sky.money', 'ondo', 'elixir', 'openeden']
 # Ethena - убрать из общего расчета стратегии, т.к. он не стабильный.
 # Посчитать APY на протокол, а не на pool.
-TARGET_ASSETS = ["usdc", "usdt", "compound usdt", 'usdt0']
+TARGET_ASSETS = ["usdc", "usdt", "susds", 'dai' "compound usdt", 'usdt0']
 TARGET_CHAINS = ["ethereum", "base", "arbitrum", "avalanche", "bnb", "polygon"]
 START_DATE = "2024-06-06"  
 END_DATE = "2025-06-06"    
@@ -210,13 +210,15 @@ def main():
     tvl_summary = tvl_summary.fillna(0)
     
     # Save APY summary
-    apy_summary_file = os.path.join(OUTPUT_DIR, "summary_apy.csv")
-    apy_summary.to_csv(apy_summary_file)
+    apy_summary_file = os.path.join("statistics/summary_apy.csv")
+    apy_summary = apy_summary.reset_index().rename(columns={"index": "date"})
+    apy_summary.to_csv(apy_summary_file, index=False)
     print(f"\nAPY Summary saved to {apy_summary_file}")
     
     # Save TVL summary
-    tvl_summary_file = os.path.join(OUTPUT_DIR, "summary_tvl.csv")
-    tvl_summary.to_csv(tvl_summary_file)
+    tvl_summary_file = os.path.join("statistics/summary_tvl.csv")
+    tvl_summary = tvl_summary.reset_index().rename(columns={"index": "date"})
+    tvl_summary.to_csv(tvl_summary_file, index=False)
     print(f"TVL Summary saved to {tvl_summary_file}")
     
     print("\nData collection complete!")
